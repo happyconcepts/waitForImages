@@ -1,17 +1,17 @@
-#waitForImages#
+# waitForImages
 
-Copyright (c) 2011-2015 Alex Dickson [@alexdickson](http://twitter.com/alexdickson)
+Copyright (c) 2011-2018 Alexander Dickson [@alexdickson](http://twitter.com/alexdickson)
 
 Licensed under the [MIT licenses](https://raw.github.com/alexanderdickson/waitForImages/master/LICENSE-MIT).
 
 [http://alexanderdickson.com](http://alexanderdickson.com)
 
-[![Donate](http://www.pledgie.com/campaigns/18572.png?skin_name=chrome)](http://www.pledgie.com/campaigns/18572)
+[Donate!](http://paypal.me/alexwilliamdickson)
 
 
-[![Build Status](https://secure.travis-ci.org/alexanderdickson/waitForImages.png)](http://travis-ci.org/alexanderdickson/waitForImages)
+[![Build Status](https://secure.travis-ci.org/alexanderdickson/waitForImages.svg)](http://travis-ci.org/alexanderdickson/waitForImages)
 
-##Overview##
+## Overview
 
 Provides useful callbacks once descendant images have loaded.
 
@@ -21,7 +21,7 @@ It can be useful when WebKit incorrectly reports element dimensions/offsets on d
 
 Supports all browsers you probably care about.
 
-##Get it##
+## Get it
 
 You can either grab the source yourself...
 
@@ -32,19 +32,25 @@ You can either grab the source yourself...
 
 - [Hosted on CDNJS (minified)](http://cdnjs.cloudflare.com/ajax/libs/jquery.waitforimages/1.5.0/jquery.waitforimages.min.js)
 
-Alternatively, you can install with [`bower`](http://bower.io/).
+Alternatively, you can install with [`bower`](http://bower.io/)...
 
 ```bash
 bower install waitForImages
 ```
 
+...or [`npm`](https://www.npmjs.com/)...
+
+```bash
+npm install jquery.waitforimages
+```
+
 Of course, these need to be loaded after `jQuery` is made available. The current version should be supported by at least jQuery 1.8, or perhaps earlier. If you find incompatibility issues, please check out a previous tagged version.
 
-##Usage##
+## Usage
 
 There are two ways to use waitForImages: with a standard callback system (previously the only API) or receiving a promise.
 
-###Standard###
+### Standard
 
 Just provide a callback function and it will be called once all descendant images have loaded.
 
@@ -66,7 +72,7 @@ $('selector').waitForImages().done(function() {
 
 In the callbacks, `this` is a reference to the collection that `waitForImages()` was called on.
 
-###Advanced###
+### Advanced
 
 You can pass a second function as a callback that will be called for each image that is loaded, with some information passed as arguments.
 
@@ -127,7 +133,7 @@ $('img').not(':has-src').remove();
 $('img:uncached').attr('title', 'Loading Image');
 ```
 
-##Feedback##
+## Feedback
 
 Please use the [Issues](https://github.com/alexanderdickson/waitForImages/issues) for any bugs, feature requests, etc.
 

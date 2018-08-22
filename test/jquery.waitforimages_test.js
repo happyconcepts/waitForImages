@@ -6,6 +6,7 @@
     var IMG_ELEMENTS = 1;
     var DIV_ELEMENTS = 1;
     var ATTR_ELEMENTS = 1;
+    var IMG_SRCSET_ELEMENTS = 1;
 
     var getImageUrl = function() {
 		return "about:";
@@ -39,12 +40,36 @@
                 }).appendTo(this.container);
             }
 
+            for (i = 0; i < IMG_SRCSET_ELEMENTS; i++) {
+                $("<img />", {
+                    srcset: getImageUrl() + " 2x"
+                }).appendTo(this.container);
+            }
+
 			this.container.css("background", "url(" + getImageUrl() + ")");
 
         },
 
         teardown: function() {
             this.container.empty();
+        }
+    };
+
+    var setup2 = {
+        setup: function() {
+            setup.setup.call(this);
+            this.container2 = $("<div />").appendTo("#qunit-fixture");
+            this.container2.css("background", "url(" + getImageUrl() + ")");
+            $("<img />", {
+                src: getImageUrl(),
+                alt: ""
+            }).appendTo(this.container2);
+            this.combinedContainers = this.container.add(this.container2);
+        },
+
+        teardown: function() {
+            setup.teardown.call(this);
+            this.container2.empty();
         }
     };
 
@@ -168,7 +193,7 @@
 
     asyncTest("Each Callback", function() {
 
-		expect(4 * (IMG_ELEMENTS + DIV_ELEMENTS + ATTR_ELEMENTS + 1) + 1);
+		expect(4 * (IMG_ELEMENTS + DIV_ELEMENTS + ATTR_ELEMENTS + IMG_SRCSET_ELEMENTS + 1) + 1);
 
 		var self = this;
 
@@ -188,7 +213,7 @@
 
     asyncTest("Each Promise", function() {
 
-        expect(4 * (IMG_ELEMENTS + DIV_ELEMENTS + ATTR_ELEMENTS + 1) + 1);
+        expect(4 * (IMG_ELEMENTS + DIV_ELEMENTS + ATTR_ELEMENTS + IMG_SRCSET_ELEMENTS + 1) + 1);
 
         var self = this;
 
@@ -204,6 +229,43 @@
             start();
         }, true);
 
+    });
+
+    module("Two parent containers", setup2);
+
+    asyncTest("Finished Callback gets called after all Each Callbacks", function() {
+
+        expect(15);
+
+        var self = this;
+        var finishCalled = false;
+
+        this.combinedContainers.waitForImages(function() {
+            finishCalled = true;
+            ok(true, "Assert finished callback called.");
+            start();
+        }, function() {
+            equal(finishCalled, false);
+            ok(true, "Assert each callback called.");
+        }, true);
+
+    });
+
+    asyncTest("Finished Promise gets resolved after all Each Promises", function() {
+        expect(22);
+
+        var self = this;
+        var finishCalled = false;
+
+        this.combinedContainers.waitForImages(true).done(function() {
+            finishCalled = true;
+            ok(true, "Assert done promise called.");
+            start();
+        }).progress(function(loaded, count, success) {
+            equal(finishCalled, false);
+            ok(loaded <= count, "Assert loaded count is never larger than the count.");
+            ok(true, "Assert each callback called.");
+        });
     });
 
 }(jQuery));
